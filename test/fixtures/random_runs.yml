@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  route: MyString
+  created_at: 2014-08-02 14:27:09
+  last_ran_at: 2014-08-02 14:27:09
+  generated: 1
+  attempted: 1
+  completed: 1
+  rank: 1.5
+
+two:
+  route: MyString
+  created_at: 2014-08-02 14:27:09
+  last_ran_at: 2014-08-02 14:27:09
+  generated: 1
+  attempted: 1
+  completed: 1
+  rank: 1.5

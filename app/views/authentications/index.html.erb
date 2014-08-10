@@ -1,0 +1,60 @@
+<head>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcybI4pTGBEJCmYiCFXcp6GKkbzydsf8Y"></script
+  <%= javascript_include_tag "application" %>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        user-scalable=no" />
+  
+</head>
+
+<h1>Hello, random runner</h1>
+
+<% if user_signed_in? %>
+ Logged in as <strong><%= current_user.display_name %></strong>.
+ <%= link_to 'Edit profile', edit_user_registration_path %> |
+ <%= link_to 'Authentications', authentications_path %> |
+ <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+ <%= form_for @randomrun, url: {action: "create"}, html: {id: "randomrun_create", 
+   class: "randomrun_form"} do |f| %>
+   <%= f.hidden_field :route %>
+   <%= f.hidden_field :desired_length %>
+   <%= f.hidden_field :angle %>
+   <%= f.submit %>
+ <% end %>
+ <%= form_for @randomrun, url: {action: "update"}, html: {id: "randomrun_update", 
+   class: "randomrun_form"} do |f| %>
+   <%= f.hidden_field :actual_length %>
+   <%= f.submit %>
+ <% end %>
+ <%= form_for @run_instance, url: {action: "update"}, html: {id: "run_instance_update", 
+   class: "randomrun_form"} do |f| %>
+   <%= f.hidden_field :started_at %>
+   <%= f.hidden_field :ended_at %>
+   <%= f.hidden_field :completed %>
+   <%= f.hidden_field :duration_in_ms %>
+   <%= f.hidden_field :rating %>
+   <%= f.submit %>
+ <% end %>
+<div>
+  <div id="divButtons">
+    <button type="button" id="btnCalculateRoute" onclick="getLocation();">Skip</button>
+    <button id="btnStartEnd" type="button" onclick="startTimer();">Start!</button>
+    <button type="button" id="btnVoteUp" onclick="">Vote Up</button>
+    <button type="button" id="btnVoteDown" onclick="">Vote Down</button>
+  </div>
+  <div id="divActualLength"></div>
+  <div id="divEditableCountdown">
+    <input id="txtHours" type="number" value="0" max="12" min="0" />
+    <span>:</span>
+    <input id="txtMinutes" type="number" value="0" max="59" min="0" />
+    <span>:</span>
+    <input id="txtSeconds" type="number" value="0" max="59" min="0" />
+  </div>
+</div>
+<div id="map-canvas"></div> <!-- TODO canvas size, timer, display length, all styles -->
+<% else %>
+ <%= link_to "Sign up", new_user_registration_path %> |
+ <%= link_to "Login", new_user_session_path %>
+ <li><%= link_to "Twitter", user_omniauth_authorize_path(:twitter) %></li>
+ <li><%= link_to "Facebook", user_omniauth_authorize_path(:facebook) %></li>
+<% end %>

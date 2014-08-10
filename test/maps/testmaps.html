@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Google Maps API test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+              user-scalable=no">
+        <!--
+        <style type="text/css">
+            html { height: 100% }
+            body { height: 100%; margin: 0; padding: 0 }
+            #map-canvas { height: 100% }
+        </style>
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcybI4pTGBEJCmYiCFXcp6GKkbzydsf8Y">
+        </script>
+        <script type="text/javascript">
+            var runLength = 1000;
+            
+            // Radius of the earth in m : 20000000/Pi 
+            // -> the originally proposed definition of the meter
+            var EarthRadius = 6366198;
+            var EvenMagicRatio = 1.3416407864998738178455042012388; // 3/sqrt(5)
+            var OddMagicRatio = 1.4142135623730950488016887242097; // sqrt(2)
+            var RadToDegRatio = 57.295779513082320876798154814105; // 180/PI
+            var DegToRadRatio = 0.01745329251994329576923690768489; // PI/180
+            var LatitudeTolerance = 0.00001;
+            var LongitudeTolerance = 0.00001;
+            
+            google.maps.event.addDomListener(window, 'load', getLocation);
+
+            var directionsDisplay;
+            var directionsService = new google.maps.DirectionsService();
+            
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+
+            }
+
+            function showPosition(position) {
+                var mapOptions = {
+                    center: new google.maps.LatLng(position.coords.latitude,
+                      position.coords.longitude),
+                    zoom: 17
+                };
+                var map = new google.maps.Map(document.getElementById("map-canvas"),
+                  mapOptions);
+                var startLatLng = new google.maps.LatLng(position.coords.latitude,
+                        position.coords.longitude);
+                var markerOptions = {
+                    position: startLatLng,
+                    visible: true,
+                    map: map
+                };
+                var marker = new google.maps.Marker(markerOptions);
+                
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                directionsDisplay.setMap(map);
+                var textBox = document.getElementById("txtDesiredLength");
+                if (textBox.value != "" && !isNaN(textBox.value))
+                {       
+                    // It's a number
+                    var numValue = parseFloat(textBox.value);
+                    getRandomRun(startLatLng, startLatLng, numValue);
+                }
+            }
+            
+            function distance(lon1, lat1, lon2, lat2) {
+                if(Math.abs(lon2 - lon1) < LongitudeTolerance) {
+                    if(Math.abs(lat2 - lat1) < LatitudeTolerance) {
+                        // Latitudes and longitudes are equal
+                        return 0;
+                    }
+                    // Longitudes are equal
+                    return distanceLat(lat1, lat2);
+                } else if(Math.abs(lat2 - lat1) < LatitudeTolerance) {
+                    // Latitudes are equal
+                    return distanceLon(lon1, lon2, lat1);
+                }
+                var y = toRad(lat2-lat1);
+                var dLon = toRad(lon2-lon1);
+                var x = dLon * Math.cos(toRad(lat1+lat2)/2);
+                return Math.sqrt(x*x + y*y) * EarthRadius; // Pythagoras
+            }
+            
+            function distanceLat(lat1, lat2) {
+                var y = toRad(lat2-lat1);
+                return y * EarthRadius; // Pythagoras
+            }
+            
+            function distanceLon(lon1, lon2, lat) {
+                var dLon = toRad(lon2-lon1);
+                var x = dLon * Math.cos(toRad(lat));
+                return x * EarthRadius; // Pythagoras
+            }
+            
+            function getNextPosition(latitude, longitude, angle, distance) {
+                angle = Math.PI/2 - angle; // angle of 0 is up. PI/2 is right
+                var y = toRad(latitude);
+                var x = toRad(longitude) * Math.cos(y);
+                var deltaY = Math.sin(angle) * distance/EarthRadius;
+                var deltaX = Math.cos(angle) * distance/EarthRadius;
+                var position = new google.maps.LatLng(toDeg(y + deltaY),
+                    toDeg((x + deltaX)/Math.cos(y)));
+                return position;
+            }
+            
+            function getPathLength(start, end) {
+                return EvenMagicRatio * distance(start.lng(),start.lat(), 
+                    end.lng(),end.lat());
+            }
+            
+            function getAngle(start, end) {
+                var y = end.lat()-start.lat();
+                var dLon = end.lng()-start.lng();
+                var x = dLon * Math.cos(toRad(end.lat()+start.lat())/2);
+                return Math.atan2(x, y); // PI/2 - atan(y/x) because 0 is up
+            }
+            
+            function getRandomRun(start, end, length){
+                var pathLength = getPathLength(start, end);
+                if(pathLength == 0) {
+                    var waypoints = [];
+                    var randAngle = Math.random()*Math.PI*2;
+                    var corners = 2 + Math.floor(Math.sqrt(length/800));
+                    var ratio = corners % 2 == 0 ? EvenMagicRatio : OddMagicRatio;
+                    var legLength = length/(corners*ratio);
+                    // (corners-2)*Math.PI is the total angle of the polygon
+                    var legAngle = 2*Math.PI/corners;
+                    var nextPosition = new google.maps.LatLng(start.lat(),
+                        start.lng());
+                    for(var i = 0; i < corners-1; i++) {
+                        nextPosition = getNextPosition(nextPosition.lat(), 
+                        nextPosition.lng(), randAngle+i*legAngle, legLength);
+                        waypoints.push({location:nextPosition, 
+                            stopover: false});
+                    }
+                    
+                    var request = {
+                        origin: start,
+                        destination: start,
+                        waypoints: waypoints,
+                        optimizeWaypoints: true,
+                        travelMode: google.maps.TravelMode.WALKING
+                    };
+                    
+                    directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            displayDirections(response, randAngle);
+                        }
+                    });
+                } else if(pathLength < length) {
+                    var dDistance = length - pathLength;
+                    var angle = getAngle(start, end);
+                    //TODO
+                } else {
+                    alert("Distance between start and end point (" + 
+                            pathLength.toString() + 
+                            ") is greater than requested run-distance (" + 
+                            length.toString() + ").");
+                }
+            }
+            
+            function displayDirections(response, randAngle) {
+                directionsDisplay.setDirections(response);
+                var routeLength = 0;
+                var route = response.routes[0];
+                for(var i = 0; i < route.legs.length; i++) {
+                    routeLength += route.legs[i].distance.value;
+                }
+                var output = document.getElementById("divActualLength");
+                output.innerHTML = "Angle: " + toDeg(randAngle).toString() + 
+                        " degrees. Actual length (in meters): " +
+                        routeLength.toString();
+            }
+            
+            function toRad(value) {
+                return value * DegToRadRatio;
+            }
+            
+            function toDeg(value) {
+                return value * RadToDegRatio;
+            }
+            
+        </script>
+        -->
+    </head>
+    <body>
+        <a href='http://www.google.com'><strong>Link</strong></a>
+        <div>
+            Desired length (in meters):
+            <input type="text" id="txtDesiredLength" value="4000"/>
+            <button type="button" id="btnCalculateRoute" onclick="getLocation();">Calculate Route</button>
+        </div>
+        <div id="divActualLength">Actual length is being calculated.</div>
+        <div id="map-canvas"></div>
+    </body>
+</html>

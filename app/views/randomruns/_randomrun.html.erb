@@ -1,0 +1,46 @@
+<%= render 'header' %>
+
+<% if user_signed_in? %>
+ <%= form_for @randomrun, url: {action: "create"}, html: {id: "random_run_create", 
+   class: "randomrun_form"} do |f| %>
+   <%= f.text_field :route %>
+   <%= f.text_field :desired_length %>
+   <%= f.text_field :angle %>
+   <%= f.submit %>
+ <% end %>
+ <% if @randomrun && !@randomrun.id.nil? %>
+  <%= form_for @randomrun, url: {action: "update"}, method: "patch", 
+    html: {id: "random_run_update", class: "randomrun_form"} do |f| %>
+    <%= f.text_field :actual_length %>
+    <%= f.submit %>
+  <% end %>
+ <% end %>
+ <%= form_for([@randomrun, @randomrun.run_instances.build], url: run_instances_path,
+   html: {id: "run_instance_create", class: "randomrun_form"}) do |f| %>
+   <%= text_field(:randomrun, :id) %>
+   <%= f.text_field :started_at %>
+   <%= f.text_field :ended_at %>
+   <%= f.text_field :rating %>
+   <%= f.text_field :completed %>
+   <%= f.text_field :duration_in_ms %>
+   <%= f.text_field :attempted %>
+   <%= f.submit %>
+ <% end %>
+<div>
+  <div id="divButtons">
+    <button type="button" id="btnCalculateRoute" onclick="location.reload();">Skip</button>
+    <button id="btnStartEnd" type="button" onclick="startTimer();" value='0'>Start!</button>
+    <button type="button" id="btnVoteUp" onclick="setRating('1');">Vote Up</button>
+    <button type="button" id="btnVoteDown" onclick="setRating('-1');">Vote Down</button>
+  </div>
+  <div id="divInfo"></div>
+  <div id="divEditableCountdown">
+    <input id="txtHours" type="number" value="0" max="12" min="0" />
+    <span>:</span>
+    <input id="txtMinutes" type="number" value="0" max="59" min="0" />
+    <span>:</span>
+    <input id="txtSeconds" type="number" value="0" max="59" min="0" />
+  </div>
+</div>
+<div id="map-canvas"></div> <!-- TODO canvas size, timer, display length, all styles -->
+<% end %>

@@ -1,0 +1,58 @@
+// Place all the styles related to the randomruns controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div#divButtons {
+    display: none;
+}
+
+div#divEditableCountdown {
+    display: none;
+}
+
+div#divInfo {
+    display: none;
+}
+
+.randomrun_form {
+    display: none;
+}
+
+div#divPanel {
+    position: relative;
+    background-color: lightcoral;
+    //overflow: hidden;
+}
+
+div#divUserInfo {
+    float: right;
+}
+
+div#divWelcome {
+    clear: both;
+}
+
+.textcenter {
+    text-align: center;
+}
+
+.center {
+    margin: auto;
+    width: 80%;
+}
+
+.imgRun {
+    width: 100px;
+    height: 57px;
+    margin: 0 auto;
+    display: block;
+}
+
+img#imgLogout {
+    width: 32px;
+    height: 32px;   
+}
+
+span#spanUserInfo {
+    vertical-align: top;
+}
