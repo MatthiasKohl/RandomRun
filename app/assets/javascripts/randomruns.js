@@ -256,7 +256,7 @@ function displayDirections(response, angleRad, length, waypoints) {
     
     $('#pDetails').html("For this run, we started with an angle of " 
             + Math.floor(toDeg(angleRad)).toString() + "° clockwise from the north," 
-            + " making an equiangular and equilateral shape with " 
+            + " making an equiangular and equilateral polygon with " 
             + (waypoints.length + 1).toString()+ " sides.<br/>" 
             + "The desired length of this run was " + Math.floor(length.toString())
             + "m. The actual length is " + routeLength.toString() + "m." 
