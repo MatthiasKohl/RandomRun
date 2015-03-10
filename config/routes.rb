@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -8,12 +6,7 @@ Rails.application.routes.draw do
 
   Randomrun::Application.routes.draw do
     
-  resources :randomruns, :run_instances
-  
-  resources :articles do
-    resources :comments
-  end
-  
+  resources :randomruns, :run_instances  
     
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
 controllers: {omniauth_callbacks: "authentications", registrations: "registrations"}
