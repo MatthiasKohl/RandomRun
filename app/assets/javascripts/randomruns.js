@@ -41,6 +41,7 @@ function init() {
     $('#imgRandomRunner').click(function(){randomRunRequested = true;});
     
     $('#divEditableCountdown').hide();
+    
     $('#divInfo').hide();
     $('#btnMoreDetails').html(detailsHtmlDisabled).click(function(){
         $('#pDetails').slideToggle();
@@ -51,6 +52,10 @@ function init() {
     });
     $('#pDetails').hide();
     $('#divButtons').hide();
+    $('#btnStartEnd').click(startTimer);
+    $('#btnVoteUp').click(function() { setRating(1); });
+    $('#btnVoteDown').click(function() { setRating(-1); });
+    $('#divVotingButtons').buttonset();
     $('#run_instance_rating').val(runRating);
     $('#run_instance_attempted').val(runAttempted);
     if(window.location.pathname === '/randomruns/new') {

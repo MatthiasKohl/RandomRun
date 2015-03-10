@@ -28,17 +28,22 @@
  <% end %>
 <div>
   <div id="divButtons">
-    <button type="button" id="btnCalculateRoute" onclick="location.reload();">Skip</button>
-    <button id="btnStartEnd" type="button" onclick="startTimer();" value='0'>Start!</button>
-    <button type="button" id="btnVoteUp" onclick="setRating('1');">Vote Up</button>
-    <button type="button" id="btnVoteDown" onclick="setRating('-1');">Vote Down</button>
+    <%= button_to "Skip", new_randomrun_path, :method => "get", form: {"id" => "btnSkip"} %>
+    <button type="button" id="btnStartEnd" value="0">Start!</button>
+    <div id="divVotingButtons">
+      <input type="radio" id="btnVoteUp" name="votingButton">
+      <label for="btnVoteUp">Vote Up</label>
+      <input type="radio" id="btnVoteDown" name="votingButton">
+      <label for="btnVoteDown">Vote Down</label>
+    </div>
   </div>
   <div id="divEditableCountdown">
-    <input id="txtHours" type="number" value="0" max="12" min="0" />
+    <span>Desired time: </span>
+    <input id="txtHours" class="countdown" type="number" value="0" min="0" max="12" />
     <span>:</span>
-    <input id="txtMinutes" type="number" value="0" max="59" min="0" />
+    <input id="txtMinutes" class="countdown" type="number" value="0" min="0" max="59" />
     <span>:</span>
-    <input id="txtSeconds" type="number" value="0" max="59" min="0" />
+    <input id="txtSeconds" class="countdown" type="number" value="0" min="0" max="59" />
   </div>
 </div>
 <div id="map-canvas"></div> <!-- TODO canvas size, timer, display length, all styles -->

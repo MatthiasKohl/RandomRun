@@ -70,3 +70,16 @@ p#btnMoreDetails {
     color: blue;
     text-decoration: underline;
 }
+
+.countdown {
+    width: 28px;
+}
+
+form#btnSkip,
+form#btnSkip > div {
+    display: inline;
+}
+
+div#divVotingButtons {
+    display: inline;
+}
