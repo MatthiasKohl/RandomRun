@@ -33,7 +33,6 @@
     <button type="button" id="btnVoteUp" onclick="setRating('1');">Vote Up</button>
     <button type="button" id="btnVoteDown" onclick="setRating('-1');">Vote Down</button>
   </div>
-  <div id="divInfo"></div>
   <div id="divEditableCountdown">
     <input id="txtHours" type="number" value="0" max="12" min="0" />
     <span>:</span>
@@ -43,4 +42,8 @@
   </div>
 </div>
 <div id="map-canvas"></div> <!-- TODO canvas size, timer, display length, all styles -->
+<div id="divInfo">
+  <button id="btnMoreDetails" href="">More Details...</button>
+  <p id="pDetails"></p>
+</div>
 <% end %>

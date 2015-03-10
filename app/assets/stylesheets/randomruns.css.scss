@@ -46,6 +46,15 @@ div#divWelcome {
     height: 57px;
     margin: 0 auto;
     display: block;
+    background-size: cover;
+}
+
+.hoverLogo {
+    background-image: url(image_path("RandomRunner_small.gif"));
+}
+
+.staticLogo {
+    background-image: url(image_path("Fun-Run-Logo1_small.jpg"));
 }
 
 img#imgLogout {
@@ -55,4 +64,9 @@ img#imgLogout {
 
 span#spanUserInfo {
     vertical-align: top;
+}
+
+p#btnMoreDetails {
+    color: blue;
+    text-decoration: underline;
 }

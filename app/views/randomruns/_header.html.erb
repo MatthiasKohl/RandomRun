@@ -25,10 +25,8 @@
   <% end %>
   </div>
   <div id='divWelcome' class='center'>
-    <p id='spanHeader' class='textcenter'>Hey Random Runner</p>
-    <%= link_to(new_randomrun_path, html_options={class: 'imgRun'}) do %>
-      <%= image_tag('http://cityoflapwai.com/wp-content/uploads/2013/06/Fun-Run-Logo.jpg', 
-        html_options={class: 'imgRun'}) %>
-    <% end %>
+    <!-- <p id='spanHeader' class='textcenter'>Hey Random Runner</p> -->
+    <%= link_to("", new_randomrun_path, html_options={id: "imgRandomRunner", 
+        class: "imgRun staticLogo"}) %>
   </div>
 </div>

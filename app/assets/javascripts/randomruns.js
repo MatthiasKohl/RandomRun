@@ -1,18 +1,4 @@
-/*
-$(document).ready(function(){
-    $('#new_random_run').on("ajax:success", function(data) {
-        alert(data.toString());
-    }).on("ajax:error", function(data){
-        alert(data.toString());
-    });
-    $.post("/randomruns",{random_run:{route: "HelloWorld2", commit: "Create"}}).done(function(data, data2, data3, data4){
-        alert(data.toString());
-        alert(data2.toString());
-        alert(data3.toString());
-        alert(data4.toString());
-    });
-});
-*/
+var randomRunRequested = false;
 
 // Radius of the earth in m : 20000000/Pi 
 // -> the originally proposed definition of the meter
@@ -39,11 +25,31 @@ var runAttempted = false;
 var directionsDisplay;
 var directionsService;
 
+var detailsHtmlDisabled = "More Details &#x25BC;";
+var detailsHtmlEnabled = "More Details &#x25B2;";
+var detailsShown = false;
+
 $(document).ready(init);
 
 function init() {
+    $('#imgRandomRunner').hover(function(){
+        $(this).addClass("hoverLogo").removeClass("staticLogo");
+    }, function(){
+        if(!randomRunRequested)
+            $(this).addClass("staticLogo").removeClass("hoverLogo");
+    });
+    $('#imgRandomRunner').click(function(){randomRunRequested = true;});
+    
     $('#divEditableCountdown').hide();
     $('#divInfo').hide();
+    $('#btnMoreDetails').html(detailsHtmlDisabled).click(function(){
+        $('#pDetails').slideToggle();
+        $(this).html(detailsShown 
+        ? detailsHtmlDisabled 
+        : detailsHtmlEnabled);
+        detailsShown = !detailsShown;
+    });
+    $('#pDetails').hide();
     $('#divButtons').hide();
     $('#run_instance_rating').val(runRating);
     $('#run_instance_attempted').val(runAttempted);
@@ -100,7 +106,7 @@ function computeRun(position) {
     getRandomRun(startLatLng, startLatLng, randomLength);
 }
 
-function showRoute(startPosition, endPosition, waypoints, angleDeg, length) {
+function showRoute(startPosition, endPosition, waypoints, angleRad, length) {
     var mapOptions = {
         center: startPosition,
         zoom: 17
@@ -136,7 +142,7 @@ function showRoute(startPosition, endPosition, waypoints, angleDeg, length) {
     directionsService.route(request, function(response, status) {
         //alert(status.toString());
         if (status == google.maps.DirectionsStatus.OK) {
-            displayDirections(response, angleDeg, length);
+            displayDirections(response, angleRad, length, waypoints);
         }
     });
 }
@@ -234,7 +240,7 @@ function getRandomRun(start, end, length){
     //alert('called routing');
 }
 
-function displayDirections(response, randAngle, length) {
+function displayDirections(response, angleRad, length, waypoints) {
     directionsDisplay.setDirections(response);
     var routeLength = 0;
     var route = response.routes[0];
@@ -248,12 +254,15 @@ function displayDirections(response, randAngle, length) {
         $.post(window.location.pathname, $("#random_run_update").serialize());
     }
     
-    $('#divInfo').html("Angle: " + randAngle.toString() + 
-            "°." + " Actual length: " + routeLength.toString() + 
-            "m." + " Desired length: " + Math.floor(length.toString()) +
-            "m." + " Deviation: " + 
-            (Math.floor(10000*Math.abs(length-routeLength)/length)/100).toString() +
-            "%.");
+    $('#pDetails').html("For this run, we started with an angle of " 
+            + Math.floor(toDeg(angleRad)).toString() + "° clockwise from the north," 
+            + " making an equiangular and equilateral shape with " 
+            + (waypoints.length + 1).toString()+ " sides.<br/>" 
+            + "The desired length of this run was " + Math.floor(length.toString())
+            + "m. The actual length is " + routeLength.toString() + "m." 
+            + " The length-deviation in percent is : " 
+            + (Math.floor(10000*Math.abs(length-routeLength)/length)/100).toString() 
+            + "%.");
     finalizeLoadRun();
 }
 
