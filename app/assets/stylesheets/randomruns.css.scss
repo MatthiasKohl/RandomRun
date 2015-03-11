@@ -2,43 +2,32 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-div#divButtons {
-    display: none;
-}
-
-div#divEditableCountdown {
-    display: none;
-}
-
-div#divInfo {
-    display: none;
-}
-
 .randomrun_form {
     display: none;
 }
 
-div#divPanel {
+header {
     position: relative;
+    height: 65px;
     background-color: lightcoral;
-    //overflow: hidden;
-}
-
-div#divUserInfo {
-    float: right;
 }
 
 div#divWelcome {
-    clear: both;
+    display: block;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+div#divLogin {
+    float: right;
 }
 
 .textcenter {
     text-align: center;
-}
-
-.center {
-    margin: auto;
-    width: 80%;
 }
 
 .imgRun {
@@ -71,6 +60,10 @@ p#btnMoreDetails {
     text-decoration: underline;
 }
 
+div#divInfo {
+    margin-top: 3px;
+}
+
 .countdown {
     width: 28px;
 }
@@ -82,4 +75,17 @@ form#btnSkipForm > div {
 
 div#divVotingButtons {
     display: inline;
+}
+
+div#divButtons {
+    margin-top: 3px;
+}
+
+div#divEditableCountdown {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+button#btnTerminate{
+    float: right;
 }

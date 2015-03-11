@@ -15,4 +15,6 @@
 //= require jquery.turbolinks
 //= require turbolinks
 //= require jquery-ui/button
+//= require jquery-ui/accordion
+//= require jquery-ui/spinner
 //= require_tree .

@@ -1,6 +1,6 @@
 <%= render 'header' %>
 
-<% if user_signed_in? %>
+<%# if user_signed_in? %>
  <%= form_for @randomrun, url: {action: "create"}, html: {id: "random_run_create", 
    class: "randomrun_form"} do |f| %>
    <%= f.text_field :route %>
@@ -30,7 +30,6 @@
   <div id="divButtons">
     <%= button_to "Skip", new_randomrun_path, :method => "get", 
       form: {"id" => "btnSkipForm"}, :id => "btnSkip" %>
-    <button type="button" id="btnStartEnd" value="0">Start!</button>
     <div id="divVotingButtons">
       <input type="radio" id="btnVoteUp" name="votingButton">
       <label for="btnVoteUp">Vote Up</label>
@@ -39,17 +38,23 @@
     </div>
   </div>
   <div id="divEditableCountdown">
-    <span>Desired time: </span>
-    <input id="txtHours" class="countdown" type="number" value="0" min="0" max="12" />
+    <button type="button" id="btnStartPause" value="0">Start!</button>
+    <!--
+    <label for="timeSpinner">Time: </label>
+    <input id="timeSpinner" name="timeSpinner" value="00:00:00">
+    -->
+    <span>Time: </span>
+    <input id="txtHours" class="countdown" name="txtHours" value="0" min="0" max="12" />
     <span>:</span>
-    <input id="txtMinutes" class="countdown" type="number" value="0" min="0" max="59" />
+    <input id="txtMinutes" class="countdown" name="txtMinutes" value="0" min="0" max="59" />
     <span>:</span>
-    <input id="txtSeconds" class="countdown" type="number" value="0" min="0" max="59" />
+    <input id="txtSeconds" class="countdown" name="txtSeconds" value="0" min="0" max="59" />
+    <button type="button" id="btnTerminate">Terminate!</button>
   </div>
 </div>
 <div id="map-canvas"></div> <!-- TODO canvas size, timer, display length, all styles -->
 <div id="divInfo">
-  <button id="btnMoreDetails" href="">More Details...</button>
-  <p id="pDetails"></p>
+  <h3 id="btnMoreDetails">More Details</h3>
+  <div id="divMoreDetails"></div>
 </div>
-<% end %>
+<%# end %>

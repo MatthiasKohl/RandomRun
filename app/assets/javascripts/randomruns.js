@@ -42,22 +42,22 @@ function init() {
     
     $('#divEditableCountdown').hide();
     
-    $('#divInfo').hide();
-    $('#btnMoreDetails').html(detailsHtmlDisabled).click(function(){
-        $('#pDetails').slideToggle();
-        $(this).html(detailsShown 
-        ? detailsHtmlDisabled 
-        : detailsHtmlEnabled);
-        detailsShown = !detailsShown;
-    });
-    $('#pDetails').hide();
+    $('#divInfo').hide().accordion({
+        header: "h3",
+        collapsible: true,
+        heightStyle: "content"
+    }).accordion("option", "active", false);
     $('#divButtons').hide();
     $('#btnSkip').button();
-    $('#btnStartEnd').button();
-    $('#btnStartEnd').click(startTimer);
+    $('#btnStartPause').button();
+    $('#btnStartPause').click(startTimer);
     $('#btnVoteUp').click(function() { setRating(1); });
     $('#btnVoteDown').click(function() { setRating(-1); });
     $('#divVotingButtons').buttonset();
+    $('#txtHours').spinner();
+    $('#txtMinutes').spinner();
+    $('#txtSeconds').spinner();
+    $('#btnTerminate').button().click(terminateRun);
     $('#run_instance_rating').val(runRating);
     $('#run_instance_attempted').val(runAttempted);
     if(window.location.pathname === '/randomruns/new') {
@@ -261,15 +261,16 @@ function displayDirections(response, angleRad, length, waypoints) {
         $.post(window.location.pathname, $("#random_run_update").serialize());
     }
     
-    $('#pDetails').html("For this run, we started with an angle of " 
+    $('#divMoreDetails').html("<p>For this run, we started with an angle of " 
             + Math.floor(toDeg(angleRad)).toString() + "° clockwise from the north," 
             + " making an equiangular and equilateral polygon with " 
-            + (waypoints.length + 1).toString()+ " sides.<br/>" 
+            + (waypoints.length + 1).toString()+ " sides.</p><p>" 
             + "The desired length of this run was " + Math.floor(length.toString())
             + "m. The actual length is " + routeLength.toString() + "m." 
             + " The length-deviation in percent is : " 
             + (Math.floor(10000*Math.abs(length-routeLength)/length)/100).toString() 
-            + "%.");
+            + "%.</p>");
+    //$('#divInfo').refresh();
     finalizeLoadRun();
 }
 
@@ -290,30 +291,43 @@ function finalizeLoadRun() {
 }
 
 function startTimer() {
-    if($('#btnStartEnd').val() == '0') {
-        $('#btnStartEnd').button("option", "label", "Terminate!");
-        $('#btnStartEnd').val('1');
-        $('#txtHours').attr("readonly","readonly");
-        $('#txtMinutes').attr("readonly","readonly");
-        $('#txtSeconds').attr("readonly","readonly");
+    if($('#btnStartPause').val() == "0") {
+        // timer started
+        $('#btnStartPause').button("option", "label", "Pause");
+        $('#btnStartPause').val('1');
+        //$('#txtHours').prop("readonly", true);
+        //$('#txtMinutes').prop("readonly", true);
+        //$('#txtSeconds').prop("readonly", true);
+        $('#txtHours').spinner("disable");
+        $('#txtMinutes').spinner("disable");
+        $('#txtSeconds').spinner("disable");
         var hours = parseInt($('#txtHours').val());
         var minutes = parseInt($('#txtMinutes').val());
         var seconds = parseInt($('#txtSeconds').val());
         timerInSeconds = hours*3600 + minutes*60 + seconds;
         timerIntervalId = setInterval(updateTimer, 1000);
-        runStartedAt = new Date();
-        $('#run_instance_started_at').val(runStartedAt);
-        runAttempted = true;
-        $('#run_instance_attempted').val(runAttempted);
+        if(runStartedAt === null) {
+            runStartedAt = new Date();
+            $('#run_instance_started_at').val(runStartedAt);
+        }
+        if(runAttempted === null) {
+            runAttempted = true;
+            $('#run_instance_attempted').val(runAttempted);
+        }
     } else {
-        //TODO timer ended !
+        // timer paused
+        $('#btnStartPause').button("option", "label", "Start!");
+        $('#btnStartPause').val('0');        
         clearInterval(timerIntervalId);
-        runEndedAt = new Date();
-        $('#run_instance_ended_at').val(runEndedAt);
-        runDurationInMs = runEndedAt - runStartedAt;
-        $('#run_instance_duration_in_ms').val(runDurationInMs);
-        $('#run_instance_create').submit();
     }
+}
+
+function terminateRun() {
+    clearInterval(timerIntervalId);
+    runEndedAt = new Date();
+    $('#run_instance_ended_at').val(runEndedAt);
+    $('#run_instance_duration_in_ms').val(runDurationInMs);
+    $('#run_instance_create').submit();
 }
 
 function updateTimer() {
@@ -322,6 +336,7 @@ function updateTimer() {
         return;
     }
     timerInSeconds--;
+    runDurationInMs += 1000;
     setTimerFromSeconds(Math.abs(timerInSeconds));
 }
 

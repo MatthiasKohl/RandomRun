@@ -5,7 +5,6 @@ class RandomrunsController < ApplicationController
   end
   
   def create
-    @user = User.find(current_user.id)
     route = randomrun_params[:route]
     points = RandomRun.get_points_from_route(route)
     random_run_hash = RandomRun.get_hash_from_points(points)
@@ -18,15 +17,21 @@ class RandomrunsController < ApplicationController
       create_hash["angle"] = randomrun_params[:angle]
       create_hash["actual_length"] = randomrun_params[:actual_length]
       @randomrun = RandomRun.new(create_hash)
-    end
-    
-    @randomrun.route = route
-    
-    if @randomrun.save
-      @userrun = @user.random_runs.find_by random_run_hash
-      if @userrun.nil?
-        @user.random_runs << @randomrun
+      @randomrun.route = route
+      
+      if @randomrun.save
+        if current_user.nil?
+          #TODO
+        else
+          @user = User.find(current_user.id)
+          @userrun = @user.random_runs.find_by random_run_hash
+          if @userrun.nil?
+            @user.random_runs << @randomrun
+          end
+        end        
+        redirect_to randomrun_path(@randomrun)
       end
+    else
       redirect_to randomrun_path(@randomrun)
     end
   end
