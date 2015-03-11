@@ -52,6 +52,8 @@ function init() {
     });
     $('#pDetails').hide();
     $('#divButtons').hide();
+    $('#btnSkip').button();
+    $('#btnStartEnd').button();
     $('#btnStartEnd').click(startTimer);
     $('#btnVoteUp').click(function() { setRating(1); });
     $('#btnVoteDown').click(function() { setRating(-1); });
@@ -289,7 +291,7 @@ function finalizeLoadRun() {
 
 function startTimer() {
     if($('#btnStartEnd').val() == '0') {
-        $('#btnStartEnd').html('Terminate!');
+        $('#btnStartEnd').button("option", "label", "Terminate!");
         $('#btnStartEnd').val('1');
         $('#txtHours').attr("readonly","readonly");
         $('#txtMinutes').attr("readonly","readonly");

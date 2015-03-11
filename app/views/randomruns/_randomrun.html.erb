@@ -28,7 +28,8 @@
  <% end %>
 <div>
   <div id="divButtons">
-    <%= button_to "Skip", new_randomrun_path, :method => "get", form: {"id" => "btnSkip"} %>
+    <%= button_to "Skip", new_randomrun_path, :method => "get", 
+      form: {"id" => "btnSkipForm"}, :id => "btnSkip" %>
     <button type="button" id="btnStartEnd" value="0">Start!</button>
     <div id="divVotingButtons">
       <input type="radio" id="btnVoteUp" name="votingButton">
