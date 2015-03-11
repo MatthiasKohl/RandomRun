@@ -211,6 +211,7 @@ DEPENDENCIES
   mocha
   mysql2
   nifty-generators
+  omniauth
   omniauth-facebook
   omniauth-twitter
   rails (= 4.1.4)

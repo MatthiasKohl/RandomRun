@@ -19,6 +19,7 @@ gem 'nifty-generators'
 
 # Sign-on/Authentication gems
 gem 'devise'
+gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'twitter'
