@@ -22,8 +22,19 @@ div#divWelcome {
     transform: translate(-50%, -50%);
 }
 
-div#divLogin {
+div#divNav {
     float: right;
+}
+
+ul#ulNav {
+    list-style-type: none;
+    margin: 0;
+    margin-right: 5px;
+    padding: 0;
+}
+
+ul#ulNav > li {
+    display: inline;
 }
 
 .textcenter {
@@ -49,10 +60,6 @@ div#divLogin {
 img#imgLogout {
     width: 32px;
     height: 32px;   
-}
-
-span#spanUserInfo {
-    vertical-align: top;
 }
 
 p#btnMoreDetails {

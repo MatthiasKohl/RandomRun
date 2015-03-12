@@ -1,20 +1,24 @@
 <header>
-  <div id="divLogin">
-    <% if user_signed_in? %>
-      <span id='spanUserInfo'>
-        Logged in: <%= link_to(edit_user_registration_path) do %> 
-        <strong><%= current_user.display_name %></strong>
-        <% end %>
-      </span>
-      <%= link_to(destroy_user_session_path, method: :delete) do %>
-        <%= image_tag('gnome_logout.png', html_options={id: 'imgLogout'}) %>
+  <div id="divNav">
+    <ul id="ulNav">
+      <% if user_signed_in? %>
+        <li>
+          <%= link_to(edit_user_registration_path) do %>
+            <strong><%= current_user.display_name %></strong>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to(destroy_user_session_path, method: :delete) do %>
+            <%= image_tag('gnome_logout.png', html_options={id: 'imgLogout'}) %>
+          <% end %>
+        </li>
+      <% else %>
+       <li><%= link_to "Login", new_user_session_path %></li>
+       <li><%= link_to "Sign up", new_user_registration_path %></li>
+       <li><%= link_to "Twitter", user_omniauth_authorize_path(:twitter) %></li>
+       <li><%= link_to "Facebook", user_omniauth_authorize_path(:facebook) %></li>
       <% end %>
-    <% else %>
-     <%= link_to "Sign up", new_user_registration_path %> |
-     <%= link_to "Login", new_user_session_path %>
-     <li><%= link_to "Twitter", user_omniauth_authorize_path(:twitter) %></li>
-     <li><%= link_to "Facebook", user_omniauth_authorize_path(:facebook) %></li>
-    <% end %>
+    </ul>
   </div>
   <div id='divWelcome'>
     <!-- <p id='spanHeader' class='textcenter'>Hey Random Runner</p> -->
