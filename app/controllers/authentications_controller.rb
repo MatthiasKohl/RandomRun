@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
   def index
-    redirect_to(:controller => 'randomruns')
+    redirect_to randomruns_path
   end
   
   def twitter

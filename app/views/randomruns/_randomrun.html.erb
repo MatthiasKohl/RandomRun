@@ -1,5 +1,13 @@
 <%= render 'header' %>
 
+<% content_for :for_head do %>
+  <script type="text/javascript" 
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcybI4pTGBEJCmYiCFXcp6GKkbzydsf8Y"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        user-scalable=no" />
+<% end %>
+
 <%# if user_signed_in? %>
  <%= form_for @randomrun, url: {action: "create"}, html: {id: "random_run_create", 
    class: "randomrun_form"} do |f| %>

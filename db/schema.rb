@@ -13,13 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140809162728) do
 
-  create_table "articles", force: true do |t|
-    t.string   "title"
-    t.text     "text"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "authentications", force: true do |t|
     t.string   "user_id"
     t.string   "provider"
@@ -29,16 +22,6 @@ ActiveRecord::Schema.define(version: 20140809162728) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "comments", force: true do |t|
-    t.string   "commenter"
-    t.text     "body"
-    t.integer  "article_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "comments", ["article_id"], name: "index_comments_on_article_id", using: :btree
 
   create_table "random_runs", force: true do |t|
     t.datetime "created_at"
