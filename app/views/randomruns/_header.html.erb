@@ -3,7 +3,7 @@
     <ul id="ulNav">
       <% if user_signed_in? %>
         <li>
-          <%= link_to(edit_user_registration_path) do %>
+          <%= link_to(user_path(current_user)) do %>
             <strong><%= current_user.display_name %></strong>
           <% end %>
         </li>

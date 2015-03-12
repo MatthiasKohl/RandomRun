@@ -7,10 +7,12 @@ Rails.application.routes.draw do
   Randomrun::Application.routes.draw do
     
   resources :randomruns, :run_instances  
-    
+  
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
 controllers: {omniauth_callbacks: "authentications", registrations: "registrations"}
  
+  resources :users, only: [:show]
+  
   root 'randomruns#index'
   
 end
