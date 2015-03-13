@@ -5,8 +5,11 @@
   <h3>Your random runs:</h3>
   <div>
       <ul>
-          <% @user.random_runs.each do |random_run| %>
-            <li><%= link_to random_run.id, randomrun_path(random_run) %></li>
+          <% @randomruns.each do |random_run| %>
+            <li><%= link_to random_run.actual_length.to_s + 
+                    "m, Rating: " + random_run.rank.to_s + 
+                    (random_run.rank.nil? ? "none" : random_run.rank.to_s), 
+                    randomrun_path(random_run) %></li>
           <% end %>
       </ul>
   </div>
