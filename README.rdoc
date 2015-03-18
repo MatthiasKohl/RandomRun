@@ -1,7 +1,11 @@
 == Random Run
 
+
+
 This is a small website to create random runs :).
+
 A random run is just a circle starting at your current location (as given by the browser) and ending there, too.
+
 The site is intended for joggers, cyclists, cyclopses and much more !
 
 It's currently under development and still lacks plenty of things.
