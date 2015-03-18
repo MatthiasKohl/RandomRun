@@ -1,28 +1,21 @@
-== README
+== Random Run
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a small website to create random runs :).
+A random run is just a circle starting at your current location (as given by the browser) and ending there, too.
+The site is intended for joggers, cyclists, cyclopses and much more !
 
-Things you may want to cover:
+It's currently under development and still lacks plenty of things.
 
-* Ruby version
+What you need to get up and running:
+* A Linux environment with Ruby on Rails 4.1+ and MySQL 5+ for the web server
+* A browser to connect to that web server
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Steps to create the server and start modifying/developing it:
+* Install MySQL
+* Install Ruby on Rails
+* Clone repo
+* Go to repo directory and run:
+   bundle install
+   bundle exec rake db:setup
+   bundle exec rake db:migrate
+* To start a development server: go to repo directory and run <tt>rails server</tt>
